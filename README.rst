@@ -13,7 +13,8 @@ Its architecture has been largely inspired by `exitnode/nmap-sqlite-output`_
 
 Usage:
 
-.. code:: Shell
+.. code:: Bash
+
     nmap --script csv-output --script-args=filename=myscan.csv -p 1-1000 scanme.nmap.org
 
 
