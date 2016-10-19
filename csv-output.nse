@@ -4,9 +4,10 @@ The output contains the host, its IP address, the scanned port, the protocol, th
 
 ---
 -- @usage
--- nmap --script csv-output --script-args=filename=myscan.csv <target>
+-- nmap -A --script csv-output --script-args=filename=myscan.csv <target>
+-- nmap -v0 -A --scirpt csv-output <target> # -v0 suppress any other output so only have the CSV data
 -- @args
--- filename: name of the csv file (default: scan.csv)
+-- filename: name of the csv file (default outputs to stdout)
 
 author     = "Anne-Gwenn Kettunen"
 license    = "MIT"
@@ -25,11 +26,11 @@ postrule = function() return true end
 
 if (nmap.registry.args.filename~=nil) then
   filename = nmap.registry.args.filename
+  file = io.open(filename, "a")
 else
-  filename = "scan.csv"
+  file = io.stdout
 end
 
-file = io.open(filename, "a")
 
 -- This is where everything happens
 function portaction (host, port)
