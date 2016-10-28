@@ -17,6 +17,8 @@ local nmap = require "nmap"
 
 -- The Rule Section
 
+local escapeCSV, to_CSV
+
 function prerule ()
   file:write("hostname,ip,port,protocol,state,service,version\n") -- This will be the header of the CSV file
 end
@@ -24,8 +26,9 @@ end
 portrule = function() return true end
 postrule = function() return true end
 
+local file
 if (nmap.registry.args.filename~=nil) then
-  filename = nmap.registry.args.filename
+  local filename = nmap.registry.args.filename
   file = io.open(filename, "a")
 else
   file = io.stdout
@@ -44,11 +47,11 @@ function portaction (host, port)
     version = version .. port.version.version
   end
 
-  data = { host.name .. "," .. host.ip .. "," .. port.number .. "," .. port.protocol
+  local data = { host.name .. "," .. host.ip .. "," .. port.number .. "," .. port.protocol
 .. "," .. port.state .. "," .. port.service .. "," .. version }
 
   -- write_as_csv(file,data)
-  csv_data = to_CSV(data)
+  local csv_data = to_CSV(data)
   file:write(csv_data)
 
 end
